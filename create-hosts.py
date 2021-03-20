@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import xlrd
 import os
 import re
 import openpyxl
