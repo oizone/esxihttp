@@ -27,10 +27,11 @@ for i in ws.iter_rows(min_row=3):
     output.write('reboot --noeject\n')
 
     output.write('%firstboot --interpreter=busybox\n')
-    capacitydisks=i[9].value.split(',')
-    for disk in capacitydisks:
-        if disk!='':
-            output.write('esxcli vsan storage tag add -t capacityFlash -d `esxcli storage core device list|grep -B 1 "Display Name:.*{}"|head -n 1`\n'.format(disk))
+    if i[9].value.split != '':
+        capacitydisks=i[9].value.split(',')
+        for disk in capacitydisks:
+            if disk!='':
+                output.write('esxcli vsan storage tag add -t capacityFlash -d `esxcli storage core device list|grep -B 1 "Display Name:.*{}"|head -n 1`\n'.format(disk))
 
     output.write('esxcli network ip dns search add --domain={}\n'.format(i[11].value))
 
