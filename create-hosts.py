@@ -64,7 +64,8 @@ for i in ws.iter_rows(min_row=3):
     
     boot=open("{}/boot.cfg".format(i[0].value),"w+")
     newboot=re.sub("/","",bootcfg,flags=re.M)
-    newboot=re.sub(r'prefix=[^\n]*','prefix={}/'.format(i[16].value),newboot,flags=re.M)
+    newboot=re.sub(r'title=[^\n]*','title=Loading ESXi installer (https://github.com/oizone/esxihttp)',newboot,flags=re.M)
+    newboot=re.sub(r'prefix=[^\n]*','prefix={}/{}/'.format(ws['B1'].value,i[16].value),newboot,flags=re.M)
     newboot=re.sub(r'kernelopt=[^\n]*','kernelopt={}'.format(ks),newboot,flags=re.M)
     boot.write(newboot)
     boot.close()
