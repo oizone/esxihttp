@@ -9,7 +9,7 @@ ws=wb["Hosts"]
 
 
 for i in ws.iter_rows(min_row=3):
-    ks='ks=http://{}/{}/ks.cfg'.format(ws['B1'].value,i[0].value)
+    ks='ks={}/{}/ks.cfg'.format(ws['B1'].value,i[0].value)
     if not os.path.exists(i[0].value):
         os.mkdir(i[0].value)
     output=open("{}/ks.cfg".format(i[0].value),"w+")
@@ -57,16 +57,13 @@ for i in ws.iter_rows(min_row=3):
         output.write('esxcli vsan policy setdefault -c vmnamespace -p "((\"hostFailuresToTolerate\" i0) (\"forceProvisioning\" i1))"\n')
         output.write('esxcli vsan policy setdefault -c vmswap -p "((\"hostFailuresToTolerate\" i0) (\"forceProvisioning\" i1))"\n')
         output.write('esxcli vsan policy setdefault -c vmem -p "((\"hostFailuresToTolerate\" i0) (\"forceProvisioning\" i1))"\n')
-    output.write('#esxcli network ip interface remove --interface-name=vmk1\n')
-    output.write('#esxcli network vswitch standard portgroup remove --portgroup-name="iDRAC Network" --vswitch-name=vSwitchiDRACvusb\n')
-    output.write('#esxcli network vswitch standard remove --vswitch-name=vSwitchiDRACvusb\n')
     output.write('reboot\n')
     output.close()
     bootcfg=open("{}/boot.cfg".format(i[16].value),"r").read()
     
     boot=open("{}/boot.cfg".format(i[0].value),"w+")
     newboot=re.sub("/","",bootcfg,flags=re.M)
-    newboot=re.sub(r'prefix=[^\n]*','prefix=cd/',newboot,flags=re.M)
+    newboot=re.sub(r'prefix=[^\n]*','prefix={}/'.format(i[16].value),newboot,flags=re.M)
     newboot=re.sub(r'kernelopt=[^\n]*','kernelopt={}'.format(ks),newboot,flags=re.M)
     boot.write(newboot)
     boot.close()
