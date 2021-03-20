@@ -27,7 +27,7 @@ for i in ws.iter_rows(min_row=3):
     output.write('reboot --noeject\n')
 
     output.write('%firstboot --interpreter=busybox\n')
-    if i[9].value.split != '':
+    if i[9].value.split != None:
         capacitydisks=i[9].value.split(',')
         for disk in capacitydisks:
             if disk!='':
