@@ -5,26 +5,15 @@ import re
 import openpyxl
 wb=openpyxl.load_workbook(filename='esxi-hosts.xlsx')
 ws=wb["Hosts"]
-#hosts=ws.tables["Hosts"]
 
 
-#excel=xlrd.open_workbook('esxi-hosts.xlsx')
-#sheet=excel.sheet_by_index(0)
 bootcfg=open("cd/boot.cfg","r").read()
 i = 2
 
-#while i < sheet.nrows:
 for i in ws.iter_rows(min_row=3):
-    #ks='ks=nfs://{}/{}'.format(sheet.cell(0,1).value,i[0].value)
-    #ks='ks=http://{}/{}/{}'.format(sheet.cell(0,1).value,i[7].value,i[0].value)
-    #ks='ks=http://{}/{}'.format(sheet.cell(0,1).value,i[7].value)
+    ks='ks=http://{}/{}'.format(ws['B1'].value,i[7].value)
     if not os.path.exists(i[0].value):
         os.mkdir(i[0].value)
-    #if not os.path.exists(i[7].value):
-    #    os.mkdir(i[7].value)
-    #if not os.path.exists("config"):
-    #    os.mkdir("config")
-    #output=open("{}/{}".format(i[7].value,i[0].value),"w+")
     output=open("{}/ks.cfg".format(i[0].value),"w+")
 
     output.write('vmaccepteula\n')
@@ -75,30 +64,12 @@ for i in ws.iter_rows(min_row=3):
     output.write('#esxcli network vswitch standard remove --vswitch-name=vSwitchiDRACvusb\n')
     output.write('reboot\n')
     output.close()
-    #if os.path.exists("config/{}".format(i[0].value.split('.')[0][-8:])):
-    #    os.remove("config/{}".format(i[0].value.split('.')[0][-8:]))
-    #os.symlink("{}".format(i[7].value),"config/{}".format(i[0].value.split('.')[0][-8:]))
     
     boot=open("{}/boot.cfg".format(i[0].value),"w+")
-    #boot=open("pxelinux.cfg/{}.boot.cfg".format(i[7].value),"w+")
     newboot=re.sub("/","",bootcfg,flags=re.M)
     newboot=re.sub(r'prefix=[^\n]*','prefix=cd/',newboot,flags=re.M)
-    #newboot=re.sub(r'prefix=[^\n]*','prefix=http://{}/cd/'.format(sheet.cell(0,1).value),newboot,flags=re.M)
     newboot=re.sub(r'kernelopt=[^\n]*','kernelopt={}'.format(ks),newboot,flags=re.M)
     boot.write(newboot)
     boot.close()
     
-
-    i += 1
-
-
-
-
-
- 
-
-
-
- 
- 
 
