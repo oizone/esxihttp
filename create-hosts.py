@@ -14,12 +14,12 @@ while i < sheet.nrows:
     ks='ks=http://{}/{}'.format(sheet.cell(0,1).value,sheet.cell(i,7).value)
     if not os.path.exists(sheet.cell(i,0).value):
         os.mkdir(sheet.cell(i,0).value)
-    if not os.path.exists(sheet.cell(i,7).value):
-        os.mkdir(sheet.cell(i,7).value)
-    if not os.path.exists("config"):
-        os.mkdir("config")
+    #if not os.path.exists(sheet.cell(i,7).value):
+    #    os.mkdir(sheet.cell(i,7).value)
+    #if not os.path.exists("config"):
+    #    os.mkdir("config")
     #output=open("{}/{}".format(sheet.cell(i,7).value,sheet.cell(i,0).value),"w+")
-    output=open("config/{}".format(sheet.cell(i,7).value),"w+")
+    output=open("{}/ks.cfg".format(sheet.cell(i,0).value),"w+")
 
     output.write('vmaccepteula\n')
  
@@ -73,7 +73,7 @@ while i < sheet.nrows:
         os.remove("config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
     os.symlink("{}".format(sheet.cell(i,7).value),"config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
     
-    boot=open("{}/boot.cfg".format(sheet.cell(i,7).value),"w+")
+    boot=open("{}/boot.cfg".format(sheet.cell(i,0).value),"w+")
     #boot=open("pxelinux.cfg/{}.boot.cfg".format(sheet.cell(i,7).value),"w+")
     newboot=re.sub("/","",bootcfg,flags=re.M)
     newboot=re.sub(r'prefix=[^\n]*','prefix=cd/',newboot,flags=re.M)
