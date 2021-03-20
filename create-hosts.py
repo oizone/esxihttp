@@ -7,11 +7,9 @@ wb=openpyxl.load_workbook(filename='esxi-hosts.xlsx')
 ws=wb["Hosts"]
 
 
-bootcfg=open("cd/boot.cfg","r").read()
-i = 2
 
 for i in ws.iter_rows(min_row=3):
-    ks='ks=http://{}/{}'.format(ws['B1'].value,i[7].value)
+    ks='ks=http://{}/{}/ks.cfg'.format(ws['B1'].value,i[0].value)
     if not os.path.exists(i[0].value):
         os.mkdir(i[0].value)
     output=open("{}/ks.cfg".format(i[0].value),"w+")
@@ -64,6 +62,7 @@ for i in ws.iter_rows(min_row=3):
     output.write('#esxcli network vswitch standard remove --vswitch-name=vSwitchiDRACvusb\n')
     output.write('reboot\n')
     output.close()
+    bootcfg=open("{}/boot.cfg".format(i[16].value),"r").read()
     
     boot=open("{}/boot.cfg".format(i[0].value),"w+")
     newboot=re.sub("/","",bootcfg,flags=re.M)
@@ -71,5 +70,6 @@ for i in ws.iter_rows(min_row=3):
     newboot=re.sub(r'kernelopt=[^\n]*','kernelopt={}'.format(ks),newboot,flags=re.M)
     boot.write(newboot)
     boot.close()
+
     
 
