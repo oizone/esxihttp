@@ -69,9 +69,9 @@ while i < sheet.nrows:
     output.write('#esxcli network vswitch standard remove --vswitch-name=vSwitchiDRACvusb\n')
     output.write('reboot\n')
     output.close()
-    if os.path.exists("config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:])):
-        os.remove("config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
-    os.symlink("{}".format(sheet.cell(i,7).value),"config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
+    #if os.path.exists("config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:])):
+    #    os.remove("config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
+    #os.symlink("{}".format(sheet.cell(i,7).value),"config/{}".format(sheet.cell(i,0).value.split('.')[0][-8:]))
     
     boot=open("{}/boot.cfg".format(sheet.cell(i,0).value),"w+")
     #boot=open("pxelinux.cfg/{}.boot.cfg".format(sheet.cell(i,7).value),"w+")
